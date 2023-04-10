@@ -44,9 +44,12 @@ public class NSXRepository {
                 transaction.commit();
                 return true;
             } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
                 e.printStackTrace(System.out);
+                return false;
             }
-            return false;
         }
 
     public boolean update(NSX value) {
@@ -57,6 +60,9 @@ public class NSXRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
             return false;
         }
@@ -70,9 +76,12 @@ public class NSXRepository {
                 transaction.commit();
                 return true;
             } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
                 e.printStackTrace(System.out);
+                return false;
             }
-            return false;
         }
 
 

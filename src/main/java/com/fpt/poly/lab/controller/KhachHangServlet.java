@@ -2,12 +2,12 @@ package com.fpt.poly.lab.controller;
 
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 import com.fpt.poly.lab.entity.KhachHang;
 import com.fpt.poly.lab.service.CommonService;
 import com.fpt.poly.lab.service.impl.KhachHangServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(name = "KhachHangServlet", value = {"/khach-hang/hien-thi", "/khach-hang/view-update", "/khach-hang/update", "/khach-hang/view-add", "/khach-hang/add", "/khach-hang/detail", "/khach-hang/delete"})
 public class KhachHangServlet extends HttpServlet {
 
-    private final CommonService khachHangService = new KhachHangServiceImpl();
+    private CommonService khachHangService = new KhachHangServiceImpl();
     private List<KhachHang> list = new ArrayList<KhachHang>();
 
 
@@ -92,6 +92,7 @@ public class KhachHangServlet extends HttpServlet {
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ngaySinh = request.getParameter("ngaySinh");
+        System.out.println(ngaySinh);
         String ten = request.getParameter("ten");
         String tenDem = request.getParameter("tenDem");
         String ho = request.getParameter("ho");
@@ -101,14 +102,16 @@ public class KhachHangServlet extends HttpServlet {
         String quocGia = request.getParameter("quocGia");
         String matKhau = request.getParameter("matKhau");
         KhachHang khachHang = new KhachHang(String.valueOf(UUID.randomUUID()), null, ten, tenDem, ho, LocalDate.parse(ngaySinh), sdt, diaChi, thanhPho, quocGia, matKhau);
-        if (!khachHangService.add(khachHang)) {
-            String error = "Số điện thoại phải băt đầu từ số 0 và có 11 kí tự";
-            request.setAttribute("error", error);
+        List<String> errors = validate.validateInput(khachHang);
+        if (errors.isEmpty()) {
+            khachHangService.add(khachHang);
+
+            response.sendRedirect("/khach-hang/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
             request.setAttribute("value", khachHang);
             request.getRequestDispatcher("/view/KhachHang/viewAdd.jsp").forward(request, response);
-            return;
-        } else {
-            response.sendRedirect("/khach-hang/hien-thi");
         }
     }
 
@@ -124,14 +127,17 @@ public class KhachHangServlet extends HttpServlet {
         String quocGia = request.getParameter("quocGia");
         String matKhau = request.getParameter("matKhau");
         KhachHang khachHang = new KhachHang(flag.getId(), ma, ten, tenDem, ho, LocalDate.parse(ngaySinh), sdt, diaChi, thanhPho, quocGia, matKhau);
-        if (!khachHangService.update(khachHang)) {
-            String error = "Số điện thoại phải băt đầu từ số 0 và có 11 kí tự";
-            request.setAttribute("error", error);
+        List<String> errors = validate.validateInput(khachHang);
+
+        if (errors.isEmpty()) {
+            khachHangService.update(khachHang);
+
+            response.sendRedirect("/khach-hang/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
             request.setAttribute("value", khachHang);
             request.getRequestDispatcher("/view/KhachHang/viewUpdate.jsp").forward(request, response);
-            return;
-        } else {
-            response.sendRedirect("/khach-hang/hien-thi");
         }
     }
 }

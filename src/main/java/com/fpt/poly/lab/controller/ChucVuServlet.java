@@ -4,6 +4,7 @@ package com.fpt.poly.lab.controller;
 import com.fpt.poly.lab.entity.ChucVu;
 import com.fpt.poly.lab.service.CommonService;
 import com.fpt.poly.lab.service.impl.ChucVuServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,8 +18,7 @@ import java.util.UUID;
 
 @WebServlet(name = "ChucVuServlet", value = {"/chuc-vu/hien-thi", "/chuc-vu/view-update", "/chuc-vu/update", "/chuc-vu/view-add", "/chuc-vu/add", "/chuc-vu/detail", "/chuc-vu/delete"})
 public class ChucVuServlet extends HttpServlet {
-
-    private final CommonService chucVuService = new ChucVuServiceImpl();
+    private  CommonService chucVuService = new ChucVuServiceImpl();
     private List<ChucVu> list = new ArrayList<ChucVu>();
 
 
@@ -92,15 +92,35 @@ public class ChucVuServlet extends HttpServlet {
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         ChucVu value = new ChucVu(String.valueOf(UUID.randomUUID()), null, ten);
-        chucVuService.add(value);
-        response.sendRedirect("/chuc-vu/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            chucVuService.add(value);
+            response.sendRedirect("/chuc-vu/hien-thi");
+        }else{
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/ChucVu/viewAdd.jsp").forward(request, response);
+
+
+        }
+
 
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         ChucVu value = new ChucVu(flag.getId(), flag.getMa(), ten);
-        chucVuService.update(value);
-        response.sendRedirect("/chuc-vu/hien-thi");
+        String errors = validate.validateInput(value);
+        if(errors == null) {
+            chucVuService.update(value);
+            response.sendRedirect("/chuc-vu/hien-thi");
+        }else{
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/ChucVu/viewUpdate.jsp").forward(request, response);
+
+
+        }
     }
 }

@@ -17,7 +17,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img th:src="@{/images/logo.png}" src="../static/images/logo.png"  width="auto" height="40"
+            <img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
                  class="d-inline-block align-top" alt=""/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -27,85 +27,95 @@
     </div>
 </nav>
 <div class="container">
-    <form action="/nhan-vien/add" method="post" >
+    <form action="/nhan-vien/add" method="post">
         <div class="row">
             <div class="col-sm-5">
                 <div class="form-group">
-                    <label >Tên</label>
-                    <input type="text" name="ten" class="form-control" required value="${value.ten}">
-
+                    <label>Tên</label>
+                    <input type="text" name="ten" class="form-control" value="${value.ten}">
+                    <span class="text-danger">${errors.contains('Tên không được để trống') ? 'Tên không được để trống' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >Tên Đệm</label>
-                    <input type="text" class="form-control" required value="${value.tenDem}" name="tenDem">
-
+                    <label>Tên Đệm</label>
+                    <input type="text" class="form-control" value="${value.tenDem}" name="tenDem">
+                    <span class="text-danger">${errors.contains('Tên đệm không được để trống') ? 'Tên đệm không được để trống' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >Họ</label>
-                    <input type="text" class="form-control" required value="${value.ho}" name="ho">
-
+                    <label>Họ</label>
+                    <input type="text" class="form-control" value="${value.ho}" name="ho">
+                    <span class="text-danger">${errors.contains('Họ không được để trống') ? 'Họ không được để trống' : ''}</span>
                 </div>
                 <div class="form-group">
                     <br>
 
-                    <label >Giới tính</label>
+                    <label>Giới tính</label>
                     <br>
 
                     Nam
-                    <input type="radio"  required value="Nam" name="gioiTinh">
+                    <input type="radio" value="Nam" ${value.gioiTinh == 'Nam' ? 'checked' : ''} name="gioiTinh">
                     Nữ
-                    <input type="radio"  required value="Nữ" name="gioiTinh">
+                    <input type="radio" value="Nữ" ${value.gioiTinh == 'Nữ' ? 'checked' : ''} name="gioiTinh">
+                    <br>
+                    <span class="text-danger">${errors.contains('Vui lòng chọn giới tính') ? 'Vui lòng chọn giới tính' : ''}</span>
 
+                    <br>
                 </div>
                 <div class="form-group">
-                    <label >Ngày sinh</label>
+                    <label>Ngày sinh</label>
                     <input type="date" class="form-control" required value="${value.ngaySinh}" name="ngaySinh">
-
+                    <span class="text-danger">${errors.contains('Ngày sinh không được để trống.') ? 'Ngày sinh không được để trống.' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >Địa chỉ</label>
-                    <input type="text" class="form-control" required value="${value.diaChi}" name="diaChi">
-
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" value="${value.diaChi}" name="diaChi">
+                    <span class="text-danger">${errors.contains('Địa chỉ không được để trống') ? 'Địa chỉ không được để trống' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >SDT</label>
-                    <input type="text" class="form-control" required value="${value.sdt}" name="sdt">
-                    <p class="text-danger">${error}</p>
+                    <label>SDT</label>
+                    <input type="text" class="form-control" value="${value.sdt}" name="sdt">
+                    <span class="text-danger">${errors.contains('Số điện thoại phải bắt đầu từ số 0 và gồm 11 chữ số.') ? 'Số điện thoại phải bắt đầu từ số 0 và gồm 11 chữ số.' : ''}</span>
+                    <span class="text-danger">${errors.contains('Số điện thoại không được để trống.') ? 'Số điện thoại không được để trống.' : ''}</span>
                 </div>
 
                 <div class="form-group">
-                    <label >Mật khẩu</label>
-                    <input type="text" class="form-control" required value="${value.matKhau}" name="matKhau">
-
+                    <label>Mật khẩu</label>
+                    <input type="password" class="form-control" value="${value.matKhau}" name="matKhau">
+                    <span class="text-danger">${errors.contains('Mật khẩu không được để trống') ? 'Mật khẩu không được để trống' : ''}</span>
                 </div>
 
                 <label for="cuaHang">Cửa hàng:</label>
-                <select id="cuaHang" name="cuaHang" required class="form-select">
+                <select id="cuaHang" name="cuaHang" class="form-select">
                     <option value="" disabled selected>-- Chọn cửa hàng --</option>
                     <C:forEach items="${listCuaHang}" var="cuaHang">
-                        <option value="${cuaHang.id}">${cuaHang.ten}</option>
+                        <option value="${cuaHang.id}" ${cuaHang.id == value.cuaHang.id ? 'selected="true"' : ''}>${cuaHang.ten}</option>
                     </C:forEach>
                 </select><br>
+                <span class="text-danger">${errors.contains('Vui lòng chọn cửa hàng') ? 'Vui lòng chọn cửa hàng' : ''}</span>
 
+                <br>
                 <label for="chucVu">Chức vụ:</label>
-                <select id="chucVu" name="chucVu" required class="form-select">
+                <select id="chucVu" name="chucVu" class="form-select">
                     <option value="" disabled selected>-- Chọn chức vụ --</option>
                     <C:forEach items="${listChucVu}" var="chucVu">
-                        <option value="${chucVu.id}">${chucVu.ten}</option>
+                        <option value="${chucVu.id}" ${chucVu.id == value.chucVu.id ? 'selected="true"' : ''}>${chucVu.ten}</option>
                     </C:forEach>
                 </select><br>
+                <span class="text-danger">${errors.contains('Vui lòng chọn chức vụ') ? 'Vui lòng chọn chức vụ' : ''}</span>
+
+                <br>
 
 
                 <div class="form-group">
                     <br>
-
-                    <label >Trạng thái</label>
+                    <label>Trạng thái</label>
                     <br>
-
                     Nghỉ
-                    <input type="radio" required value="0" ${value.trangThai == '0' ? 'checked' : ''}  name="trangThai">
+                    <input type="radio" value="0" ${value.trangThai == '0' ? 'checked' : ''} name="trangThai">
                     Hoạt động
-                    <input type="radio"  required value="1" ${value.trangThai == '1' ? 'checked' : ''} name="trangThai">
+                    <input type="radio" value="1" ${value.trangThai == '1' ? 'checked' : ''} name="trangThai">
+                    <br>
+                    <span class="text-danger">${errors.contains('Vui lòng chọn trạng thái') ? 'Vui lòng chọn trạng thái' : ''}</span>
+                    <br>
 
                 </div>
                 <button type="submit" class="btn btn-primary">Add</button>
@@ -127,23 +137,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-<script>
-    function readURL(input){
-        if(input.files && input.files[0]){
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('#imgPreview').attr('src', e.target.result).width(100).height(100);
-            }
-            reader.readAsDataURL(input.files[0])
-        }
-    }
-    $('#productImage').change(function(){
-        readURL(this);
-    });
-    $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
-</script>
+
 </body>
 </html>

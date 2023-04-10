@@ -17,7 +17,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img th:src="@{/images/logo.png}" src="../static/images/logo.png"  width="auto" height="40"
+            <img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
                  class="d-inline-block align-top" alt=""/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -27,59 +27,61 @@
     </div>
 </nav>
 <div class="container">
-    <form action="/khach-hang/update" method="post" >
+    <form action="/khach-hang/update" method="post">
         <div class="row">
             <div class="col-sm-5">
 
                 <div class="form-group">
-                    <label >Mã</label>
+                    <label>Mã</label>
                     <input type="text" name="ma" class="form-control" required readonly value="${value.ma}">
 
                 </div>
                 <div class="form-group">
-                    <label >Tên</label>
-                    <input type="text" name="ten" class="form-control" required value="${value.ten}">
-
+                    <label>Tên</label>
+                    <input type="text" name="ten" class="form-control" value="${value.ten}">
+                    <span class="text-danger">${errors.contains('Tên không được để trống.') ? 'Tên không được để trống.' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >Tên Đệm</label>
-                    <input type="text" class="form-control" required value="${value.tenDem}" name="tenDem">
-
+                    <label>Tên Đệm</label>
+                    <input type="text" class="form-control" value="${value.tenDem}" name="tenDem">
+                    <span class="text-danger">${errors.contains('Tên đệm không được để trống.') ? 'Tên đệm không được để trống.' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >Họ</label>
-                    <input type="text" class="form-control" required value="${value.ho}" name="ho">
-
+                    <label>Họ</label>
+                    <input type="text" class="form-control" value="${value.ho}" name="ho">
+                    <span class="text-danger">${errors.contains('Họ không được để trống.') ? 'Họ không được để trống.' : ''}</span>
                 </div>
                 <div class="form-group">
-                    <label >Ngày sinh</label>
+                    <label>Ngày sinh</label>
                     <input type="date" class="form-control" required value="${value.ngaySinh}" name="ngaySinh">
+                    <span class="text-danger">${errors.contains('Ngày sinh không được để trống.') ? 'Ngày sinh không được để trống.' : ''}</span>
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="text" class="form-control" value="${value.sdt}" name="sdt">
+                    <span class="text-danger">${errors.contains('Số điện thoại phải bắt đầu từ số 0 và gồm 11 chữ số.') ? 'Số điện thoại phải bắt đầu từ số 0 và gồm 11 chữ số.' : ''}</span>
+                    <span class="text-danger">${errors.contains('Số điện thoại không được để trống.') ? 'Số điện thoại không được để trống.' : ''}</span>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" value="${value.diaChi}" name="diaChi">
+                    <span class="text-danger">${errors.contains('Địa chỉ không được để trống.') ? 'Địa chỉ không được để trống.' : ''}</span>
+                </div>
+                <div class="form-group">
+                    <label>Thành phố</label>
+                    <input type="text" class="form-control" value="${value.thanhPho}" name="thanhPho">
+                    <span class="text-danger">${errors.contains('Thành phố không được để trống.') ? 'Thành phố không được để trống.' : ''}</span>
+                </div>
+                <div class="form-group">
+                    <label>Quốc gia</label>
+                    <input type="text" class="form-control" value="${value.quocGia}" name="quocGia">
+                    <span class="text-danger">${errors.contains('Quốc gia không được để trống.') ? 'Quốc gia không được để trống.' : ''} </span>
 
                 </div>
                 <div class="form-group">
-                    <label >SDT</label>
-                    <input type="text" class="form-control" required value="${value.sdt}" name="sdt">
-                    <p class="text-danger">${error}</p>
-                </div>
-                <div class="form-group">
-                    <label >Địa chỉ</label>
-                    <input type="text" class="form-control" required value="${value.diaChi}" name="diaChi">
-
-                </div>
-                <div class="form-group">
-                    <label >Thành phố</label>
-                    <input type="text" class="form-control" required value="${value.thanhPho}" name="thanhPho">
-
-                </div>
-                <div class="form-group">
-                    <label >Quốc gia</label>
-                    <input type="text" class="form-control" required value="${value.quocGia}" name="quocGia">
-
-                </div>
-                <div class="form-group">
-                    <label >Mật khẩu</label>
-                    <input type="text" class="form-control" required value="${value.matKhau}" name="matKhau">
-
+                    <label>Mật khẩu</label>
+                    <input type="text" class="form-control" value="${value.matKhau}" name="matKhau">
+                    <span class="text-danger">${errors.contains('Mật khẩu không được để trống.') ? 'Mật khẩu không được để trống.' : ''}</span>
                 </div>
 
             </div>

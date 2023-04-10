@@ -13,17 +13,16 @@ import java.util.List;
 public class CuaHangRepository {
 
 
-
-        public List<CuaHang> getAll() {
-            List<CuaHang> listKH = new ArrayList<CuaHang>();
-            try (Session session = HibernateUtil.getFACTORY().openSession()) {
-                Query query = session.createQuery("FROM CuaHang ", CuaHang.class);
-                listKH = query.getResultList();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return listKH;
+    public List<CuaHang> getAll() {
+        List<CuaHang> listKH = new ArrayList<CuaHang>();
+        try (Session session = HibernateUtil.getFACTORY().openSession()) {
+            Query query = session.createQuery("FROM CuaHang ", CuaHang.class);
+            listKH = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return listKH;
+    }
 
     public CuaHang getOne(String id) {
         CuaHang value = null;
@@ -37,18 +36,21 @@ public class CuaHangRepository {
         return value;
     }
 
-        public Boolean add(CuaHang khacHang){
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getFACTORY().openSession()) {
-                transaction = session.beginTransaction();
-                session.persist(khacHang);
-                transaction.commit();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
+    public Boolean add(CuaHang khacHang) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getFACTORY().openSession()) {
+            transaction = session.beginTransaction();
+            session.persist(khacHang);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
+            e.printStackTrace(System.out);
             return false;
         }
+    }
 
     public boolean update(CuaHang value) {
         Transaction transaction = null;
@@ -58,60 +60,29 @@ public class CuaHangRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
             return false;
         }
     }
 
-        public Boolean delete(CuaHang khacHang){
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getFACTORY().openSession()) {
-                transaction = session.beginTransaction();
-                session.delete(khacHang);
-                transaction.commit();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
+    public Boolean delete(CuaHang khacHang) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getFACTORY().openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(khacHang);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
+            e.printStackTrace(System.out);
             return false;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
 }

@@ -37,7 +37,8 @@
                 </div>
                 <div class="form-group">
                     <label >Tên</label>
-                    <input type="text" name="ten" class="form-control" required value="${value.ten}">
+                    <input type="text" name="ten" class="form-control"  value="${value.ten}">
+                    <span class="text-danger">${errors.contains('Tên không được để trống') ? 'Tên không được để trống' : ''}</span>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>

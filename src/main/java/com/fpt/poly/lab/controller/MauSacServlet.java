@@ -4,6 +4,7 @@ package com.fpt.poly.lab.controller;
 import com.fpt.poly.lab.entity.MauSac;
 import com.fpt.poly.lab.service.CommonService;
 import com.fpt.poly.lab.service.impl.MauSacServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,8 +18,7 @@ import java.util.UUID;
 
 @WebServlet(name = "MauSacServlet", value = {"/mau-sac/hien-thi", "/mau-sac/view-update", "/mau-sac/update", "/mau-sac/view-add", "/mau-sac/add", "/mau-sac/detail", "/mau-sac/delete"})
 public class MauSacServlet extends HttpServlet {
-
-    private final CommonService mauSacService = new MauSacServiceImpl();
+    private  CommonService mauSacService = new MauSacServiceImpl();
     private List<MauSac> list = new ArrayList<MauSac>();
 
 
@@ -89,14 +89,34 @@ public class MauSacServlet extends HttpServlet {
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         MauSac value = new MauSac(String.valueOf(UUID.randomUUID()), null, ten);
-        mauSacService.add(value);
-        response.sendRedirect("/mau-sac/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            mauSacService.add(value);
+            response.sendRedirect("/mau-sac/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/MauSac/viewAdd.jsp").forward(request, response);
+
+        }
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         MauSac value = new MauSac(flag.getId(), flag.getMa(), ten);
-        mauSacService.update(value);
-        response.sendRedirect("/mau-sac/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            mauSacService.update(value);
+            response.sendRedirect("/mau-sac/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/MauSac/viewUpdate.jsp").forward(request, response);
+
+        }
     }
 }

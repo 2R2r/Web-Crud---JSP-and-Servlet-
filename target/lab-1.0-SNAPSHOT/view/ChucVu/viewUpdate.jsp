@@ -33,11 +33,12 @@
 
                 <div class="form-group">
                     <label >Mã</label>
-                    <input type="text" name="ma" class="form-control" required readonly value="${value.ma}">
+                    <input type="text" name="ma" class="form-control"  readonly value="${value.ma}">
                 </div>
                 <div class="form-group">
                     <label >Tên</label>
                     <input type="text" name="ten" class="form-control" required value="${value.ten}">
+                    <span class="text-danger">${errors.contains('Tên không được để trống') ? 'Tên không được để trống' : ''}</span>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

@@ -27,69 +27,87 @@
     </div>
 </nav>
 <div class="container">
-    <form action="/chi-tiet-san-pham/add" method="post" >
+    <form  action="/chi-tiet-san-pham/add" method="post" >
         <div class="row">
             <div class="col-sm-5">
 
 
                 <label for="sanPham">Sản phẩm:</label>
-                <select id="sanPham" name="sanPham" required class="form-select">
+                <select id="sanPham" name="sanPham"  class="form-select">
                     <option value="" disabled selected>-- Chọn sản phẩm --</option>
                     <C:forEach items="${listSanPham}" var="sanPham">
-                        <option value="${sanPham.id}">${sanPham.ten}</option>
+                        <option value="${sanPham.id}" ${sanPham.id == value.sanPham.id ? 'selected' : ''}>${sanPham.ten}</option>
                     </C:forEach>
-                </select><br>
+                </select>
+                <br>
+                <span class="text-danger">${errors.contains('Sản phẩm không được bỏ trống') ? 'Sản phẩm không được bỏ trống' : ''}</span>
+                <br>
 
-                <label for="nsx">Ngày sản xuất:</label>
-                <select id="nsx" name="nsx" required class="form-select">
-                    <option value="" disabled selected>-- Chọn ngày sản xuất --</option>
+                <label for="nsx">Nhà sản xuất:</label>
+                <select id="nsx" name="nsx"  class="form-select">
+                    <option value="" disabled selected>-- Chọn nhà sản xuất --</option>
                     <C:forEach items="${listNSX}" var="nsx">
-                        <option value="${nsx.id}">${nsx.ten}</option>
+                        <option value="${nsx.id}" ${nsx.id == value.nsx.id ? 'selected' : ''}>${nsx.ten}</option>
                     </C:forEach>
-                </select><br>
+                </select>
+                <br>
+                <span class="text-danger">${errors.contains('Nhà sản xuất không được bỏ trống') ? 'Nhà sản xuất không được bỏ trống' : ''}</span>
+                <br>
 
 
                 <label for="mauSac">Màu sắc:</label>
-                <select id="mauSac" name="mauSac" required class="form-select">
+                <select id="mauSac" name="mauSac"  class="form-select">
                     <option value="" disabled selected>-- Chọn màu sắc --</option>
                     <C:forEach items="${listMauSac}" var="mauSac">
-                        <option value="${mauSac.id}">${mauSac.ten}</option>
+                        <option value="${mauSac.id}" ${mauSac.id == value.mauSac.id ? 'selected' : ''}>${mauSac.ten}</option>
                     </C:forEach>
-                </select><br>
+                </select>
+                <br>
+                <span class="text-danger">${errors.contains('Màu sắc không được bỏ trống') ? 'Màu sắc không được bỏ trống' : ''}</span>
+                <br>
 
                 <label for="dongSP">Dòng sản phẩm:</label>
-                <select id="dongSP" name="dongSP" required class="form-select">
+                <select id="dongSP" name="dongSP"  class="form-select">
                     <option value="" disabled selected>-- Chọn dòng sản phẩm --</option>
                     <C:forEach items="${listDongSP}" var="dongSP">
-                        <option value="${dongSP.id}">${dongSP.ten}</option>
+                        <option value="${dongSP.id}" ${dongSP.id == value.dongSP.id ? 'selected' : ''}>${dongSP.ten}</option>
                     </C:forEach>
-                </select><br>
+                </select>
+                <br>
+                <span class="text-danger">${errors.contains('Dòng sản phẩm không được bỏ trống') ? 'Dòng sản phẩm không được bỏ trống' : ''}</span>
+                <br>
 
 
                 <div class="form-group">
                     <label >Năm bảo hành</label>
-                    <input type="text" name="namBH" class="form-control" required value="${value.namBH}">
+                    <input type="text" name="namBH" class="form-control"  value="${value.namBH}">
+                    <span class="text-danger">${errors.contains('Năm bảo hành phải là một số') ? 'Năm bảo hành phải là một số' : ''}</span>
 
                 </div>
+
                 <div class="form-group">
                     <label >Mô tả</label>
-                    <input type="text" class="form-control" required value="${value.moTa}" name="moTa">
+                    <input type="text" class="form-control"  value="${value.moTa}" name="moTa">
+                    <span class="text-danger">${errors.contains('Mô tả không được bỏ trống') ? 'Mô tả không được bỏ trống' : ''}</span>
 
                 </div>
                 <div class="form-group">
                     <label >Số lượng tồn</label>
-                    <input type="text" class="form-control" required value="${value.soLuongTon}" name="soLuongTon">
+                    <input type="text" class="form-control"  value="${value.soLuongTon}" name="soLuongTon">
+                    <span class="text-danger">${errors.contains('Số lượng tồn phải là một số') ? 'Số lượng tồn phải là một số' : ''}</span>
 
                 </div>
 
                 <div class="form-group">
                     <label >Giá nhập</label>
-                    <input type="text" class="form-control" required value="${value.giaNhap}" name="giaNhap">
+                    <input type="text" class="form-control"  value="${value.giaNhap}" name="giaNhap">
+                    <span class="text-danger">${errors.contains('Giá nhập phải là một số') ? 'Giá nhập phải là một số' : ''}</span>
 
                 </div>
                 <div class="form-group">
                     <label >Giá bán</label>
-                    <input type="text" class="form-control" required value="${value.giaBan}" name="giaBan">
+                    <input type="text" class="form-control"  value="${value.giaBan}" name="giaBan">
+                    <span class="text-danger">${errors.contains('Giá bán phải là một số') ? 'Giá bán phải là một số' : ''}</span>
 
                 </div>
 
@@ -112,23 +130,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-<script>
-    function readURL(input){
-        if(input.files && input.files[0]){
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('#imgPreview').attr('src', e.target.result).width(100).height(100);
-            }
-            reader.readAsDataURL(input.files[0])
-        }
-    }
-    $('#productImage').change(function(){
-        readURL(this);
-    });
-    $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
-</script>
+
 </body>
 </html>

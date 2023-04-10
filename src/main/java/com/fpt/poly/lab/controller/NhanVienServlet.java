@@ -8,6 +8,7 @@ import com.fpt.poly.lab.service.CommonService;
 import com.fpt.poly.lab.service.impl.ChucVuServiceImpl;
 import com.fpt.poly.lab.service.impl.CuaHangServiceImpl;
 import com.fpt.poly.lab.service.impl.NhanVienServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,12 +24,12 @@ import java.util.UUID;
 @WebServlet(name = "NhanVienServlet", value = {"/nhan-vien/hien-thi", "/nhan-vien/view-update", "/nhan-vien/update", "/nhan-vien/view-add", "/nhan-vien/add", "/nhan-vien/detail", "/nhan-vien/delete"})
 public class NhanVienServlet extends HttpServlet {
 
-    private final CommonService nhanVienService = new NhanVienServiceImpl();
-    private final CommonService cuaHangService = new CuaHangServiceImpl();
-    private final CommonService chucVuService = new ChucVuServiceImpl();
+    private  CommonService nhanVienService = new NhanVienServiceImpl();
+    private  CommonService cuaHangService = new CuaHangServiceImpl();
+    private  CommonService chucVuService = new ChucVuServiceImpl();
     private List<NhanVien> list = new ArrayList<NhanVien>();
-    private final List<ChucVu> listChucVu = chucVuService.getAll();
-    private final List<CuaHang> listCuaHang = cuaHangService.getAll();
+    private  List<ChucVu> listChucVu ;
+    private  List<CuaHang> listCuaHang ;
 
 
     @Override
@@ -65,7 +66,8 @@ public class NhanVienServlet extends HttpServlet {
     private void viewUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         NhanVien value = (NhanVien) nhanVienService.getOne((request.getParameter("id")));
         flag = value;
-
+        listChucVu = chucVuService.getAll();
+        listCuaHang = cuaHangService.getAll();
         request.setAttribute("listChucVu", listChucVu);
         request.setAttribute("listCuaHang", listCuaHang);
         request.setAttribute("value", value);
@@ -76,6 +78,8 @@ public class NhanVienServlet extends HttpServlet {
     private void viewAdd(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 
+        listChucVu = chucVuService.getAll();
+        listCuaHang = cuaHangService.getAll();
         request.setAttribute("listChucVu", listChucVu);
         request.setAttribute("listCuaHang", listCuaHang);
 
@@ -121,26 +125,27 @@ public class NhanVienServlet extends HttpServlet {
         String diaChi = request.getParameter("diaChi");
         String matKhau = request.getParameter("matKhau");
         CuaHang cuaHang = (CuaHang) cuaHangService.getOne(idCuaHang);
-        ChucVu chucVu = (ChucVu) cuaHangService.getOne(idChucVu);
-        NhanVien value = new NhanVien(String.valueOf(UUID.randomUUID()), null, ten, tenDem, ho, gioiTinh, LocalDate.parse(ngaySinh), diaChi, sdt, matKhau, cuaHang, chucVu, Integer.parseInt(trangThai));
-        if (!nhanVienService.add(value)) {
-            String error = "Số điện thoại phải băt đầu từ số 0 và có 11 kí tự";
-            request.setAttribute("error", error);
-            request.setAttribute("value", value);
+        ChucVu chucVu = (ChucVu) chucVuService.getOne(idChucVu);
+        NhanVien value = new NhanVien(String.valueOf(UUID.randomUUID()), null, ten, tenDem, ho, gioiTinh, LocalDate.parse(ngaySinh), diaChi, sdt, matKhau, cuaHang, chucVu, trangThai == null ? -1 : Integer.parseInt(trangThai));
+        List<String> errors = validate.validateInput(value);
+        if (!errors.isEmpty()) {
+            listChucVu = chucVuService.getAll();
+            listCuaHang = cuaHangService.getAll();
             request.setAttribute("listChucVu", listChucVu);
             request.setAttribute("listCuaHang", listCuaHang);
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
             request.getRequestDispatcher("/view/NhanVien/viewAdd.jsp").forward(request, response);
-            return;
         } else {
+            nhanVienService.add(value);
             response.sendRedirect("/nhan-vien/hien-thi");
-
         }
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
         String gioiTinh = request.getParameter("gioiTinh");
         String trangThai = request.getParameter("trangThai");
-
         String ngaySinh = request.getParameter("ngaySinh");
         String ten = request.getParameter("ten");
         String tenDem = request.getParameter("tenDem");
@@ -153,16 +158,17 @@ public class NhanVienServlet extends HttpServlet {
         CuaHang cuaHang = (CuaHang) cuaHangService.getOne(idCuaHang);
         ChucVu chucVu = (ChucVu) chucVuService.getOne(idChucVu);
         NhanVien value = new NhanVien(flag.getId(), flag.getMa(), ten, tenDem, ho, gioiTinh, LocalDate.parse(ngaySinh), diaChi, sdt, matKhau, cuaHang, chucVu, Integer.parseInt(trangThai));
-
-        if (!nhanVienService.update(value)) {
-            String error = "Số điện thoại phải băt đầu từ số 0 và có 11 kí tự";
-            request.setAttribute("error", error);
-            request.setAttribute("value", value);
+        List<String> errors = validate.validateInput(value);
+        if (!errors.isEmpty()) {
+            listChucVu = chucVuService.getAll();
+            listCuaHang = cuaHangService.getAll();
             request.setAttribute("listChucVu", listChucVu);
             request.setAttribute("listCuaHang", listCuaHang);
-            request.getRequestDispatcher("/view/NhanVien/viewUpdate.jsp").forward(request, response);
-            return;
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/NhanVien/viewAdd.jsp").forward(request, response);
         } else {
+            nhanVienService.update(value);
             response.sendRedirect("/nhan-vien/hien-thi");
         }
     }

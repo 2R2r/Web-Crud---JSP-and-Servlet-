@@ -4,6 +4,7 @@ package com.fpt.poly.lab.controller;
 import com.fpt.poly.lab.entity.NSX;
 import com.fpt.poly.lab.service.CommonService;
 import com.fpt.poly.lab.service.impl.NSXServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,8 +18,7 @@ import java.util.UUID;
 
 @WebServlet(name = "NSXServlet", value = {"/nsx/hien-thi", "/nsx/view-update", "/nsx/update", "/nsx/view-add", "/nsx/add", "/nsx/detail", "/nsx/delete"})
 public class NSXServlet extends HttpServlet {
-
-    private final CommonService service = new NSXServiceImpl();
+    private CommonService service = new NSXServiceImpl();
     private List<NSX> list = new ArrayList<NSX>();
 
 
@@ -92,8 +92,17 @@ public class NSXServlet extends HttpServlet {
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         NSX value = new NSX(String.valueOf(UUID.randomUUID()), null, ten);
-        service.add(value);
-        response.sendRedirect("/nsx/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            service.add(value);
+            response.sendRedirect("/nsx/hien-thi");
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/NSX/viewAdd.jsp").forward(request, response);
+
+        }
 
 
     }
@@ -101,7 +110,15 @@ public class NSXServlet extends HttpServlet {
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         NSX value = new NSX(flag.getId(), flag.getMa(), ten);
-        service.update(value);
-        response.sendRedirect("/nsx/hien-thi");
+        String errors = validate.validateInput(value);
+        if(errors == null) {
+            service.update(value);
+            response.sendRedirect("/nsx/hien-thi");
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/NSX/viewUpdate.jsp").forward(request, response);
+
+        }
     }
 }

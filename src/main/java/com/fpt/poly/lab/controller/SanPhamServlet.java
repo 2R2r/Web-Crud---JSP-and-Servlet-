@@ -5,6 +5,7 @@ import com.fpt.poly.lab.entity.SanPham;
 import com.fpt.poly.lab.service.CommonService;
 
 import com.fpt.poly.lab.service.impl.SanPhamServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,8 +19,7 @@ import java.util.UUID;
 
 @WebServlet(name = "SanPhamServlet", value = {"/san-pham/hien-thi", "/san-pham/view-update", "/san-pham/update", "/san-pham/view-add", "/san-pham/add", "/san-pham/detail", "/san-pham/delete"})
 public class SanPhamServlet extends HttpServlet {
-
-    private final CommonService service = new SanPhamServiceImpl();
+    private  CommonService service = new SanPhamServiceImpl();
     private List<SanPham> list = new ArrayList<SanPham>();
 
 
@@ -93,8 +93,18 @@ public class SanPhamServlet extends HttpServlet {
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         SanPham value = new SanPham(String.valueOf(UUID.randomUUID()), null, ten);
-        service.add(value);
-        response.sendRedirect("/san-pham/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            service.add(value);
+            response.sendRedirect("/san-pham/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/SanPham/viewAdd.jsp").forward(request, response);
+
+        }
 
 
     }
@@ -102,7 +112,18 @@ public class SanPhamServlet extends HttpServlet {
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         SanPham value = new SanPham(flag.getId(), flag.getMa(), ten);
-        service.update(value);
-        response.sendRedirect("/san-pham/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            service.update(value);
+            response.sendRedirect("/san-pham/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/SanPham/viewUpdate.jsp").forward(request, response);
+
+        }
+
     }
 }

@@ -43,9 +43,12 @@ public class KhachHangRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
+            return false;
         }
-        return false;
     }
 
     public boolean update(KhachHang value) {
@@ -56,6 +59,9 @@ public class KhachHangRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
             return false;
         }
@@ -69,9 +75,12 @@ public class KhachHangRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
+            return false;
         }
-        return false;
     }
 
 

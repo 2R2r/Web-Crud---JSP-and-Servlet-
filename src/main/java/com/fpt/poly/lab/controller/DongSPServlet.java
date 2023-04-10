@@ -4,6 +4,7 @@ package com.fpt.poly.lab.controller;
 import com.fpt.poly.lab.entity.DongSP;
 import com.fpt.poly.lab.service.CommonService;
 import com.fpt.poly.lab.service.impl.DongSPServiceImpl;
+import com.fpt.poly.lab.util.validate;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,8 +18,7 @@ import java.util.UUID;
 
 @WebServlet(name = "DongSPServlet", value = {"/dong-sp/hien-thi", "/dong-sp/view-update", "/dong-sp/update", "/dong-sp/view-add", "/dong-sp/add", "/dong-sp/detail", "/dong-sp/delete"})
 public class DongSPServlet extends HttpServlet {
-
-    private final CommonService dongSPService = new DongSPServiceImpl();
+    private CommonService dongSPService = new DongSPServiceImpl();
     private List<DongSP> list = new ArrayList<DongSP>();
 
 
@@ -90,15 +90,35 @@ public class DongSPServlet extends HttpServlet {
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         DongSP value = new DongSP(String.valueOf(UUID.randomUUID()), null, ten);
-        dongSPService.add(value);
-        response.sendRedirect("/dong-sp/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            dongSPService.add(value);
+            response.sendRedirect("/dong-sp/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/DongSP/viewAdd.jsp").forward(request, response);
+
+        }
 
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ten = request.getParameter("ten");
         DongSP value = new DongSP(flag.getId(), flag.getMa(), ten);
-        dongSPService.update(value);
-        response.sendRedirect("/dong-sp/hien-thi");
+        String errors = validate.validateInput(value);
+
+        if(errors == null) {
+            dongSPService.update(value);
+            response.sendRedirect("/dong-sp/hien-thi");
+
+        } else {
+            request.setAttribute("errors", errors);
+            request.setAttribute("value", value);
+            request.getRequestDispatcher("/view/DongSP/viewUpdate.jsp").forward(request, response);
+
+        }
     }
 }

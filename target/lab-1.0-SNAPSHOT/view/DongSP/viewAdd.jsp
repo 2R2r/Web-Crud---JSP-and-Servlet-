@@ -32,7 +32,8 @@
             <div class="col-sm-5">
                 <div class="form-group">
                     <label >Tên</label>
-                    <input type="text" name="ten" class="form-control" required value="${value.ten}">
+                    <input type="text" name="ten" class="form-control"  value="${value.ten}">
+                    <span class="text-danger">${errors.contains('Tên không được để trống') ? 'Tên không được để trống' : ''}</span>
                 </div>
                 <button type="submit" class="btn btn-primary">Add</button>
             </div>
@@ -50,23 +51,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-<script>
-    function readURL(input){
-        if(input.files && input.files[0]){
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('#imgPreview').attr('src', e.target.result).width(100).height(100);
-            }
-            reader.readAsDataURL(input.files[0])
-        }
-    }
-    $('#productImage').change(function(){
-        readURL(this);
-    });
-    $(".custom-file-input").on("change", function() {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
-</script>
+
 </body>
 </html>

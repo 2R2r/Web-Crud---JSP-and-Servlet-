@@ -30,30 +30,25 @@
     <form action="/cua-hang/update" method="post" >
         <div class="row">
             <div class="col-sm-5">
-
-                <div class="form-group">
-                    <label >Mã</label>
-                    <input type="text" name="ma" class="form-control" required readonly value="${value.ma}">
-
-                </div>
                 <div class="form-group">
                     <label >Tên</label>
-                    <input type="text" name="ten" class="form-control" required value="${value.ten}">
-
+                    <input type="text" name="ten" class="form-control"  value="${value.ten}">
+                    <span class="text-danger">${errors.contains('Tên không được để trống') ? 'Tên không được để trống' : ''}</span>
                 </div>
                 <div class="form-group">
                     <label >Địa chỉ</label>
-                    <input type="text" class="form-control" required value="${value.diaChi}" name="diaChi">
-
+                    <input type="text" class="form-control"  value="${value.diaChi}" name="diaChi">
+                    <span class="text-danger">${errors.contains('Địa chỉ không được để trống.') ? 'Địa chỉ không được để trống.' : ''}</span>
                 </div>
                 <div class="form-group">
                     <label >Thành phố</label>
-                    <input type="text" class="form-control" required value="${value.thanhPho}" name="thanhPho">
-
+                    <input type="text" class="form-control"  value="${value.thanhPho}" name="thanhPho">
+                    <span class="text-danger">${errors.contains('Thành phố không được để trống.') ? 'Thành phố không được để trống.' : ''}</span>
                 </div>
                 <div class="form-group">
                     <label >Quốc gia</label>
-                    <input type="text" class="form-control" required value="${value.quocGia}" name="quocGia">
+                    <input type="text" class="form-control"  value="${value.quocGia}" name="quocGia">
+                    <span class="text-danger">${errors.contains('Quốc gia không được để trống.') ? 'Quốc gia không được để trống.' : ''} </span>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

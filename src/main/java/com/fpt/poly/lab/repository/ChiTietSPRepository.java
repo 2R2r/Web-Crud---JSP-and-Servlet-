@@ -42,9 +42,13 @@ public class ChiTietSPRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
+            return false;
         }
-        return false;
+
     }
 
     public boolean update(ChiTietSP value) {
@@ -55,6 +59,9 @@ public class ChiTietSPRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
             return false;
         }
@@ -68,9 +75,12 @@ public class ChiTietSPRepository {
             transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace(System.out);
+            return false;
         }
-        return false;
     }
 
 
